@@ -1,0 +1,79 @@
+<Panel ux:Class="sandfox.SelectBox" Alignment="VerticalCenter" Height="35" Margin="5,0">
+    <string ux:Property="SelectedItem" />
+    <object ux:Property="SelectOptions" />
+
+    <JavaScript>
+        var DataResource = require("Modules/DataResource");
+        var slctOptions = this.SelectOptions.inner();
+
+        var options = slctOptions.map(function(option, index) {
+            return {
+                isFirst: index === 0,
+                isLast: index === slctOptions.length - 1,
+                index: index,
+                option: option
+            }
+        });
+
+        var optionCount = options.count();
+
+        function clickedData(args) {
+            console.log(args.data.option);
+            console.log(args.data.index);
+
+            switch (args.data.option) {
+                case "봄":
+                    DataResource._SelectedItem = "spring";
+                    break;
+                case "여름":
+                    DataResource._SelectedItem = "summer";
+                    break;
+                case "가을":
+                    DataResource._SelectedItem = "autunm";
+                    break;
+                case "겨울":
+                    DataResource._SelectedItem = "winter";
+                    break;
+                default:
+
+            }
+            // DataResource._SelectedItem[args.data.index] = !DataResource._SelectedItem[args.data.index];
+            // console.log(DataResource._SelectedItem[args.data.index]);
+        }
+
+        module.exports = {
+            options,
+            optionCount,
+            clickedData:clickedData
+        };
+    </JavaScript>
+
+    <Rectangle ux:Class="sandfox.SelectItem" HitTestMode="LocalBounds">
+        <int ux:Property="Index" />
+        <string ux:Property="Label" />
+        <Selectable Value="{Property Label}" />
+        <Text ux:Name="SelectedText" Alignment="Center" Font="SeoulHangangB" Color="White" Value="{Property Label}" />
+        <Stroke Color="#FFF" />
+
+        <WhileTrue Value="{isFirst}">
+            <Change this.CornerRadius="8,0,0,8" />
+        </WhileTrue>
+        <WhileTrue Value="{isLast}">
+            <Change this.CornerRadius="0,8,8,0" />
+        </WhileTrue>
+        <WhileSelected>
+            <Change SelectedText.Color="#666" Duration="0.1" />
+            <Change this.Color="White" Duration="0.1" />
+        </WhileSelected>
+        <Tapped>
+            <ToggleSelection />
+        </Tapped>
+    </Rectangle>
+
+    <Grid ColumnCount="{optionCount}">
+        <Selection Value="{Property SelectedItem}" MaxCount="1"/>
+        <Each Items="{options}">
+            <sandfox.SelectItem Label="{option}" Index="{index}" Clicked="{clickedData}" />
+        </Each>
+    </Grid>
+</Panel>

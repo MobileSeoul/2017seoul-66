@@ -1,0 +1,15 @@
+<StackPanel ux:Class="StatusAndAppBar">
+	<Rectangle Height="6" Color="#FFFFFF" />
+	<!-- This is the top ledge -->
+	<Grid Columns="auto,1*,auto"  Background="White">
+		<Panel Margin="10,8,5,8" Height="24" Width="24" HitTestMode="LocalBounds">
+			<Image File="../Assets/arrow_back.png" />
+			<Clicked Handler="{goBackMain}" />
+		</Panel>
+
+		<Text FontSize="22" Alignment="VerticalCenter" TextAlignment="Center" Font="BMJUA"
+			Value="서울길 언제나 예쁘길" Padding="2" />
+	</Grid>
+	<Rectangle Height="5" Color="#FFFFFF" />
+	<Rectangle Height="1" Margin="0" Color="#333c48" />
+</StackPanel>

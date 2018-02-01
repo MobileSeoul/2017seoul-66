@@ -1,0 +1,76 @@
+<Page ux:Class="RegiDoneView">
+    <Router ux:Dependency="router" />
+
+    <JavaScript>
+        function gotoMenu(args) {
+            router.goto("mainmenu");
+        }
+
+        module.exports={gotoMenu : gotoMenu}
+    </JavaScript>
+
+    <Panel>
+        <Panel ux:Name="transitionScaleGuide" Width="500%" Height="500%" Alignment="Center" HitTestMode="None" BoxSizing="FillAspect" Aspect="1" />
+
+        <WhileTrue ux:Name="loading">
+    		<Change changeWidth.Value="true" DelayBack="0"/>
+    		<Change loadCircle.Value="true" DelayBack="0"/>
+
+    		<Change scaleAndFade.Value="true" Delay="1" DelayBack="0"/>
+    	</WhileTrue>
+
+        <WhileTrue ux:Name="changeWidth">
+            <Change rectNormalScale.Width="60" Duration=".5" DurationBack="0" Easing="CircularInOut"/>
+        </WhileTrue>
+        <WhileTrue ux:Name="loadCircle">
+            <Change sintext.Opacity="0" Duration="0.2" DurationBack="0"/>
+            <Change loadingCircle.Opacity="1" Duration="0.3" Delay="0.2" DelayBack="0" DurationBack="0"/>
+            <Spin Target="loadingCircle" Frequency="2"/>
+            <Cycle Target="loadingCircle.LengthAngleDegrees" Low="30" High="300" Frequency="0.7" />
+        </WhileTrue>
+        <WhileTrue ux:Name="scaleAndFade">
+            <Change loadingCirclePanel.Opacity="0" Duration="0.1" />
+            <Change loadingButton.Opacity="1" Duration="0.01" />
+            <Change rectNormalScale.Opacity="0" Duration="0.01" />
+
+            <Scale Target="loadingButton" Factor="3" RelativeTo="SizeFactor" RelativeNode="transitionScaleGuide"
+                   Delay="0.01" Duration="0.7" Easing="ExponentialInOut" DurationBack="0" />
+
+            <Callback Handler="{gotoMenu}" Delay="1" />
+        </WhileTrue>
+
+
+        <Grid ux:Name="loggedOutView" Rows="3*,3*,1*" Padding="40,0">
+    		<WhileKeyboardVisible>
+    			<Move Target="mark" Y="-100" Duration=".6" Easing="ExponentialInOut"/>
+                <Move Target="sinbtn" Y="-50" Duration=".6" Easing="ExponentialInOut"/>
+    		</WhileKeyboardVisible>
+
+    		<Rectangle Layer="Background" Background="#ff91ab" />
+
+    		<Panel ux:Name="sinbtn" Row="1" Width="250" Height="60">
+                <Text ux:Name="sintext" Alignment="Center" Value="Start" FontSize="18" Color="#ff91ab"/>
+                <Panel ux:Name="loadingCirclePanel">
+                    <Circle ux:Name="loadingCircle" Width="70%" Height="70%" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
+                        <Stroke Width="1" Brush="#ff91ab" />
+                    </Circle>
+                </Panel>
+                <Clicked>
+                    <Toggle Target="loading" />
+                </Clicked>
+                <Rectangle ux:Name="rectNormalScale" CornerRadius="30" Color="#FFF" Width="300" Height="60"/>
+                <Circle ux:Name="loadingButton" Opacity="0" Alignment="Center" Layer="Background" Width="240" Height="240" Color="#FFF">
+                    <Scaling Factor="0.25" />
+                </Circle>
+    		</Panel>
+
+            <Panel Alignment="Center" Row="0" Margin="0, 40, 0, 0">
+                <StackPanel ux:Name="mark">
+                    <TitleFont ux:Name="text1" Alignment="Center">가입완료</TitleFont>
+                    <Text FontSize="15" Color="#FFF" Margin="0, 40, 0, 0" Font="SeoulHangangB" Alignment="Center">회원가입이 완료되었습니다.</Text>
+                    <Text FontSize="15" Color="#FFF" Margin="0, 10, 0, 0" Font="SeoulHangangB" Alignment="Center">아래 버튼을 클릭하여 시작하세요!</Text>
+                </StackPanel>
+            </Panel>
+    	</Grid>
+    </Panel>
+</Page>

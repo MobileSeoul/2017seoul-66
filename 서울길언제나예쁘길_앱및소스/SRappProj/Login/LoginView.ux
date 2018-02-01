@@ -1,0 +1,107 @@
+<Page ux:Class="LoginView" Background="#ccc">
+    <Router ux:Dependency="router" />
+
+    <JavaScript File="LoginView.js" />
+
+    <Panel>
+        <Panel ux:Name="transitionScaleGuide" Width="500%" Height="500%" Alignment="Center" HitTestMode="None" BoxSizing="FillAspect" Aspect="1" />
+
+        <WhileTrue Value="{loadStart}" ux:Name="loading">
+    		<Change changeWidth.Value="true" DelayBack="0"/>
+    		<Change loadCircle.Value="true" DelayBack="0"/>
+    	</WhileTrue>
+
+        <WhileTrue ux:Name="changeWidth">
+            <Change rectNormalScale.Width="60" Duration=".5" DurationBack="0.5" Easing="CircularInOut"/>
+        </WhileTrue>
+        <WhileTrue ux:Name="loadCircle">
+            <Change sintext.Opacity="0" Duration="0.2" DurationBack="0.2"/>
+            <Change loadingCircle.Opacity="1" Duration="0.3" Delay="0.2" DelayBack="0.3" DurationBack="0"/>
+            <Spin Target="loadingCircle" Frequency="2"/>
+            <Cycle Target="loadingCircle.LengthAngleDegrees" Low="30" High="300" Frequency="0.7" />
+        </WhileTrue>
+
+        <WhileTrue Value="{isSuccess}">
+            <Change scaleAndFade.Value="true" Delay=".5" DelayBack="0"/>
+        </WhileTrue>
+
+        <WhileTrue ux:Name="scaleAndFade">
+            <Change regtext.Opacity="0" Duration="0.2" DurationBack="0"/>
+            <Change loadingCirclePanel.Opacity="0" Duration="0.1" />
+            <Change loadingButton.Opacity="1" Duration="0.01" />
+            <Change rectNormalScale.Opacity="0" Duration="0.01" />
+
+            <Scale Target="loadingButton" Factor="3" RelativeTo="SizeFactor" RelativeNode="transitionScaleGuide"
+                   Delay="0.01" Duration="0.7" Easing="ExponentialInOut" DurationBack="0" />
+
+            <Callback Handler="{gotoMenu}" Delay="1" />
+        </WhileTrue>
+
+        <Grid Rows="4.5*,2*,1.5*" Padding="40,0">
+    		<WhileKeyboardVisible>
+    			<Move Target="loginArea" Y="0" Duration=".3" Easing="ExponentialInOut"/>
+                <Move Target="sinbtn" Y="40" Duration=".3" Easing="ExponentialInOut"/>
+                <Move Target="regtext" Y="70" Duration=".3" Easing="ExponentialInOut"/>
+    		</WhileKeyboardVisible>
+
+    		<Rectangle Layer="Background">
+    			<ImageFill File="../Assets/login_background_2.png" StretchMode="UniformToFill" />
+    		</Rectangle>
+
+    		<Panel ux:Name="sinbtn" Row="2" Width="250" Height="60">
+                <Text ux:Name="sintext" Alignment="Center" Value="Sign in" FontSize="18" Color="#ff91ab"/>
+                <Panel ux:Name="loadingCirclePanel">
+                    <Circle ux:Name="loadingCircle" Width="70%" Height="70%" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
+                        <Stroke Width="1" Brush="#ff91ab" />
+                    </Circle>
+                </Panel>
+                <Clicked>
+                    <Callback Handler="{loginCall}" />
+                </Clicked>
+                <Rectangle ux:Name="rectNormalScale" CornerRadius="30" Color="#FFF" Width="300" Height="60"/>
+                <Circle ux:Name="loadingButton" Opacity="0" Alignment="Center" Layer="Background" Width="240" Height="240" Color="#FFF">
+                    <Scaling Factor="0.25" />
+                </Circle>
+    		</Panel>
+
+            <Panel ux:Name="regtext" Row="3" >
+                <Grid Columns="1.5*, 1*" Offset="0, -30" >
+                    <Text Alignment="CenterRight" FontSize="15" Font="SeoulHangangM" Color="#fff" Margin="5, 0">아직 회원이 아니세요?</Text>
+                    <Text Alignment="CenterLeft" FontSize="15" Font="SeoulHangangEB" Color="#1c3871" Margin="5, 0" Clicked="{goRegister}">회원가입!</Text>
+                </Grid>
+            </Panel>
+
+            <Text ux:Class="TitleFont" FontSize="50" Font="BMJUA" Color="White" Alignment="Center" />
+
+            <Panel Alignment="Center" Row="0" Margin="0, 40, 0, 0" />
+
+    		<Grid ux:Name="loginArea" Row="1" Padding="0,20" RowCount="2" Columns="auto,1*" Height="160" MaxWidth="400">
+    			<Image     Row="0" Column="0" File="../Assets/user_icon.png" Width="20" Height="20" Margin="10,0,30,0" Alignment="Left"/>
+    			<TextInput Row="0" Column="1" PlaceholderText="Username" PlaceholderColor="#FFF" TextColor="#fff" CaretColor="#fff" Value="{username}" />
+    			<Rectangle Row="0" Column="0" Alignment="Bottom" ColumnSpan="2" Height="1" Color="#fff"/>
+
+    			<Image     Row="1" Column="0" File="../Assets/password_icon.png" Width="20" Height="20" Margin="10,0,30,0" Alignment="Left"/>
+    			<TextInput Row="1" Column="1" PlaceholderText="Password" PlaceholderColor="#FFF" TextColor="#fff" CaretColor="#fff" IsPassword="true" Value="{password}" />
+    			<Rectangle Row="1" Column="0" Alignment="Bottom" ColumnSpan="2" Height="1" Color="#fff"/>
+    		</Grid>
+    	</Grid>
+    </Panel>
+
+    <Panel ux:Name="ToastPanel" ZOffset="0">
+        <Rectangle ux:Name="Toast" Fill="#FFF" Width="200" MaxHeight="200" CornerRadius="5"
+            Alignment="Center" Opacity="0" Margin="0, 30">
+            <StackPanel Margin="5,0" Alignment="Center">
+                <Text Font="SeoulHangangB" FontSize="20" Value="{errTitle}" Margin="5"/>
+                <Text Font="SeoulHangangM" FontSize="15" TextWrapping="Wrap" MaxLength="100" Value="{errMsg}" Margin="3"/>
+                <Rectangle ux:Name="ToastText" Fill="#de413a" Width="200" Height="5" CornerRadius="5" Alignment="Bottom" Margin="0, 5, 0, 0"/>
+            </StackPanel>
+            <DropShadow Angle="135" Distance="10" Size="1" Spread=".5"/>
+        </Rectangle>
+    </Panel>
+
+    <WhileTrue Value="{showToast}">
+        <Change ToastPanel.ZOffset="99" Duration="0" DurationBack=".5" />
+        <Change Toast.Opacity="1" Duration=".3" DurationBack="0.3" Easing="CircularInOut"/>
+        <Callback Handler="{hideToast}" />
+    </WhileTrue>
+</Page>

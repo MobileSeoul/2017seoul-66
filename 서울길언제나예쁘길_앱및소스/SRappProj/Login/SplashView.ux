@@ -1,0 +1,18 @@
+<Page ux:Class="SplashView" Background="#ff91ab">
+    <Router ux:Dependency="router" />
+
+    <JavaScript File="SplashView.js"/>
+
+    <Rectangle ux:Name="splashLogo" Layer="Background" Opacity="0">
+        <ImageFill File="../Assets/splash.png" StretchMode="UniformToFill" />
+    </Rectangle>
+
+    <Font File="../Font/BMJUA_ttf.ttf" ux:Global="BMJUA"/>
+    <Font File="../Font/SeoulNamsanM.ttf" ux:Global="SeoulHangangM"/>
+    <Font File="../Font/SeoulNamsanB.ttf" ux:Global="SeoulHangangB"/>
+    <Font File="../Font/SeoulNamsanEB.ttf" ux:Global="SeoulHangangEB"/>
+
+    <WhileActive>
+        <Change splashLogo.Opacity="1" Duration="1" Delay="1" />
+    </WhileActive>
+</Page>

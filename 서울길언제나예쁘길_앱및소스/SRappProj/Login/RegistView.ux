@@ -1,0 +1,129 @@
+<Page ux:Class="RegistView">
+    <Router ux:Dependency="router" />
+
+    <JavaScript File="RegistView.js"/>
+
+    <JavaScript>
+
+        var Observable = require("FuseJS/Observable");
+
+        var options = ["봄", "여름", "가을", "겨울"];
+        var dropdownOptions = [
+            {name: "10대", age:10},
+            {name: "20대", age:20},
+            {name: "30대", age:30},
+            {name: "40대", age:40},
+            {name: "50대", age:50},
+            {name: "60대+", age:60},
+        ]
+
+        var selected = Observable("봄");
+
+        module.exports = { options, selected, dropdownOptions }
+
+    </JavaScript>
+
+    <Panel>
+        <Panel ux:Name="transitionScaleGuide" Width="500%" Height="500%" Alignment="Center" HitTestMode="None" BoxSizing="FillAspect" Aspect="1" />
+
+        <WhileTrue Value="{loadStart}" ux:Name="loading">
+    		<Change changeWidth.Value="true" DelayBack="0"/>
+    		<Change loadCircle.Value="true" DelayBack="0"/>
+    	</WhileTrue>
+
+        <WhileTrue ux:Name="changeWidth">
+            <Change rectNormalScale.Width="60" Duration=".5" DurationBack=".5" Easing="CircularInOut"/>
+        </WhileTrue>
+        <WhileTrue ux:Name="loadCircle">
+            <Change sintext.Opacity="0" Duration="0.2" DurationBack=".2"/>
+            <Change loadingCircle.Opacity="1" Duration="0.3" Delay="0.2" DelayBack="0" DurationBack=".3"/>
+            <Spin Target="loadingCircle" Frequency="2"/>
+            <Cycle Target="loadingCircle.LengthAngleDegrees" Low="30" High="300" Frequency="0.7" />
+        </WhileTrue>
+        <WhileTrue Value="{isSuccess}">
+            <Callback Handler="{goSuccessPage}" />
+        </WhileTrue>
+
+        <Grid ux:Name="loggedOutView" Rows="4*,5*,1.5*" Padding="40,0">
+    		<WhileKeyboardVisible>
+    			<Move Target="mark" Y="-200" Duration=".3" Easing="ExponentialInOut"/>
+    			<Move Target="loginArea" Y="-70" Duration=".3" Easing="ExponentialInOut"/>
+                <Move Target="sinbtn" Y="-10" Duration=".3" Easing="ExponentialInOut"/>
+                <Move Target="regtext" Y="20" Duration=".3" Easing="ExponentialInOut"/>
+    		</WhileKeyboardVisible>
+
+    		<Rectangle Layer="Background" Background="#ff91ab" />
+
+    		<Panel ux:Name="sinbtn" Row="2" Width="250" Height="60">
+                <Text ux:Name="sintext" Alignment="Center"  Value="Sign up" FontSize="18" Color="#ff91ab"/>
+                <Panel ux:Name="loadingCirclePanel">
+                    <Circle ux:Name="loadingCircle" Width="70%" Height="70%" Opacity="0" StartAngleDegrees="0" LengthAngleDegrees="90">
+                        <Stroke Width="1" Brush="#ff91ab" />
+                    </Circle>
+                </Panel>
+
+                <Clicked>
+                    <Callback Handler="{registUser}" />
+                </Clicked>
+                <Rectangle ux:Name="rectNormalScale" CornerRadius="30" Color="#FFF" Width="300" Height="60"/>
+                <Circle ux:Name="loadingButton" Opacity="0" Alignment="Center" Layer="Background" Width="240" Height="240" Color="#FFF">
+                    <Scaling Factor="0.25" />
+                </Circle>
+    		</Panel>
+
+            <Panel ux:Name="regtext" Row="3" >
+                    <Text Alignment="Center" Font="SeoulHangangB" FontSize="15" Color="#1c3871" Offset="0, -20" Clicked="{goBackLogin}">돌아가기</Text>
+            </Panel>
+
+            <Panel Alignment="Center" Row="0" Width="100%" Height="100%" Padding="0, 40, 0, 0">
+                    <StackPanel ux:Name="mark">
+                        <TitleFont ux:Name="text1" Alignment="Center">회원가입</TitleFont>
+                        <Text FontSize="15" Color="#FFF" Margin="0, 40, 0, 0" Font="SeoulHangangB" Alignment="Center">Username과 Password는</Text>
+                        <Text FontSize="15" Color="#FFF" Margin="0, 10, 0, 0" Font="SeoulHangangB" Alignment="Center">영문/숫자 조합 4~20자 까지 가능합니다.</Text>
+                    </StackPanel>
+            </Panel>
+
+
+    		<Grid ux:Name="loginArea" Row="1" Padding="0,20" RowCount="4" Columns="auto,1*" Height="300" MaxWidth="400" Offset="0, -10">
+                <Grid Row="0" ColumnSpan="2" Columns="1*,2.5*" >
+                    <sandfox.DropdownList Alignment="Center" Column="0" Offset="0, 10" DefaultString="연령대" DropdownOptions="{dropdownOptions}" />
+                    <StackPanel Column="1" >
+                        <Text Font="SeoulHangangB" FontSize="14" Value="좋아하는 계절" Alignment="Center" Color="White" Margin="0,5" />
+                        <sandfox.SelectBox SelectOptions="{options}" SelectedItem="{selected}" />
+                    </StackPanel>
+
+                </Grid>
+
+    			<Image     Row="1" Column="0" File="../Assets/user_icon.png" Width="20" Height="20" Margin="10,0,30,0" Alignment="Left"/>
+    			<TextInput Row="1" Column="1" PlaceholderText="Username" PlaceholderColor="#fff" TextColor="#fff" CaretColor="#fff" Value="{username}"/>
+    			<Rectangle Row="1" Column="0" Alignment="Bottom" ColumnSpan="2" Height="1" Color="#fff"/>
+
+    			<Image     Row="2" Column="0" File="../Assets/password_icon.png" Width="20" Height="20" Margin="10,0,30,0" Alignment="Left"/>
+    			<TextInput Row="2" Column="1" PlaceholderText="Password" PlaceholderColor="#fff" TextColor="#fff" CaretColor="#fff" IsPassword="true" Value="{password1}"/>
+    			<Rectangle Row="2" Column="0" Alignment="Bottom" ColumnSpan="2" Height="1" Color="#fff"/>
+
+                <Image     Row="3" Column="0" File="../Assets/password_icon.png" Width="20" Height="20" Margin="10,0,30,0" Alignment="Left"/>
+    			<TextInput Row="3" Column="1" PlaceholderText="Password Check" PlaceholderColor="#fff" TextColor="#fff" CaretColor="#fff" IsPassword="true" Value="{password2}"/>
+    			<Rectangle Row="3" Column="0" Alignment="Bottom" ColumnSpan="2" Height="1" Color="#fff"/>
+    		</Grid>
+    	</Grid>
+    </Panel>
+
+    <Panel ux:Name="ToastPanel" ZOffset="0">
+        <Rectangle ux:Name="Toast" Fill="#FFF" Width="200" MaxHeight="200" CornerRadius="5"
+            Alignment="Center" Opacity="0" Margin="0, 30">
+            <StackPanel Margin="5,0" Alignment="Center">
+                <Text Font="SeoulHangangB" FontSize="20" Value="ERROR!" Margin="5"/>
+                <Text Font="SeoulHangangM" FontSize="15" TextWrapping="Wrap" MaxLength="100" Value="{errMsg}" Margin="3"/>
+                <Rectangle ux:Name="ToastText" Fill="#de413a" Width="200" Height="5" CornerRadius="5" Alignment="Bottom" Margin="0, 5, 0, 0"/>
+            </StackPanel>
+            <DropShadow Angle="135" Distance="10" Size="1" Spread=".5"/>
+        </Rectangle>
+    </Panel>
+
+    <WhileTrue Value="{showToast}">
+        <Change ToastPanel.ZOffset="99" Duration="0" DurationBack=".5" />
+        <Change Toast.Opacity="1" Duration=".3" DurationBack="0.3" Easing="CircularInOut"/>
+        <Callback Handler="{hideToast}" />
+    </WhileTrue>
+</Page>

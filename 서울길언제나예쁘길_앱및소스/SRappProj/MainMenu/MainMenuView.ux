@@ -1,0 +1,58 @@
+<Page ux:Class="MainMenuView">
+    <Router ux:Dependency="router" />
+
+    <EdgeNavigator ux:Name="EdgeNavigator">
+        <JavaScript File="MainMenu.js" />
+
+        <DockPanel ux:Name="content" Background="#fff">
+            <!-- Use this to move the main app area with the side menu -->
+            <Translation ux:Name="mainAppTranslation" />
+
+            <StackPanel Dock="Top" Height="180">
+                <ImageFill File="../Assets/main_top.jpg" StretchMode="UniformToFill" />
+
+                <!-- This is the top ledge -->
+                <Grid Columns="auto,1*,auto"  Background="#00000000">
+                    <Panel Margin="5,5,7,5" Height="32" Width="32" HitTestMode="LocalBounds" />
+                    <Panel Margin="0,12,12,0" Height="32" Width="32" HitTestMode="LocalBounds" Alignment="Right">
+                        <ImageFill File="../Assets/logout.png" StretchMode="UniformToFill" />
+                        <Clicked Handler="{logout}" />
+                    </Panel>
+                </Grid>
+                <Text FontSize="28" Color="#FFF" Alignment="Center" TextAlignment="Left" Font="BMJUA"
+                    Value="서울길 언제나 예쁘길" Margin="0, 30, 0, 0" />
+            </StackPanel>
+
+            <!-- This is the main scroll area -->
+            <ScrollView>
+                <StackPanel Alignment="Top">
+                    <Panel Height="7" />
+                    <Grid RowCount="3" ColumnCount="2">
+                        <Each Items="{menulist}" >
+                            <MenuItem MenuName="{menuname}" MenuCode="{menucode}" MenuSubs="{menusubs}" LineColor="{color}" Clicked="{goforList}" /> <!--goforMap-->
+                        </Each>
+                    </Grid>
+                </StackPanel>
+            </ScrollView>
+
+            <!-- ToastPanel area -->
+            <Panel ux:Name="ToastPanel" ZOffset="0">
+                <Rectangle ux:Name="Toast" Fill="#fef9db" Width="200" MaxHeight="200" CornerRadius="5"
+                    Alignment="Center" Opacity="0" Margin="0, 30">
+                    <StackPanel Margin="5,0" Alignment="Center">
+                        <Text Font="SeoulHangangB" FontSize="20" Value="ERROR!" Margin="5"/>
+                        <Text Font="SeoulHangangM" FontSize="15" TextWrapping="Wrap" MaxLength="100" Value="{errMsg}" Margin="3"/>
+                        <Rectangle ux:Name="ToastText" Fill="#de413a" Width="200" Height="5" CornerRadius="5" Alignment="Bottom" Margin="0, 5, 0, 0"/>
+                    </StackPanel>
+                    <DropShadow Angle="135" Distance="10" Size="1" Spread=".5"/>
+                </Rectangle>
+            </Panel>
+
+            <WhileTrue Value="{showToast}">
+                <Change ToastPanel.ZOffset="99" Duration="0" DurationBack=".5" />
+                <Change Toast.Opacity="1" Duration=".3" DurationBack="0.3" Easing="CircularInOut"/>
+                <Callback Handler="{hideToast}" />
+            </WhileTrue>
+        </DockPanel>
+    </EdgeNavigator>
+</Page>

@@ -1,0 +1,16 @@
+<App Background="#000">
+    <Router ux:Name="router" />
+
+    <ClientPanel>
+        <Navigator DefaultPath="splash">
+            <SplashView ux:Template="splash" router="router" />
+            <LoginView ux:Template="login" router="router" />
+            <RegistView ux:Template="regist" router="router" />
+            <RegiDoneView ux:Template="regidone" router="router" />
+            <ListView ux:Template="list" router="router" />
+            <FavListView ux:Template="favlist" router="router" />
+            <MapView ux:Template="mapview" router="router" />
+            <MainMenuView ux:Template="mainmenu" router="router" />
+        </Navigator>
+    </ClientPanel>
+</App>

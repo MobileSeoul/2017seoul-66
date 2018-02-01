@@ -1,0 +1,19 @@
+<Panel ux:Class="Notification">
+    <string ux:Property="ToastTitle" />
+    <string ux:Property="ToastText" />
+    <string ux:Property="ToastColor" />
+
+    <WhileString Value="{Property ToastText}">
+        <Change Toast.Margin="-5,10" Duration=".2" DurationBack="0.2" Easing="CircularInOut"/>
+    </WhileString>
+
+    <Rectangle ux:Name="Toast" Fill="{Property ToastColor}" Width="20" Height="75"
+        CornerRadius="5" Alignment="TopRight" Margin="-200,10">
+        <StackPanel Margin="5,0" Alignment="Center">
+            <Text FontSize="20" Value="{Property ToastTitle}"/>
+            <Text Value="{Property ToastText}"/>
+        </StackPanel>
+        <Rectangle Fill="#fff" Width="200" Height="70" CornerRadius="5" Alignment="Top"/>
+        <DropShadow Angle="135" Distance="10" Size="1" Spread=".5"/>
+    </Rectangle>
+</Panel>

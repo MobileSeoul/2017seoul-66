@@ -1,0 +1,31 @@
+<Page ux:Class="MapView">
+    <Router ux:Dependency="router" />
+
+    <JavaScript>
+        var Observable = require("FuseJS/Observable");
+        var InterApp = require("FuseJS/InterApp");
+
+        var mapurl = Observable("");
+
+        this.Parameter.onValueChanged(module, function(newParam){
+            console.log(JSON.stringify(newParam));
+            console.log("여기로 갑시다 기사양반 -> " + mapurl);
+            mapurl = newParam.url;
+            InterApp.launchUri(mapurl);
+
+            setTimeout(function(){
+                router.goBack();
+            },2000);
+        })
+
+        module.exports = {
+            mapurl
+        }
+    </JavaScript>
+
+    <DockPanel>
+        <NativeViewHost>
+            <WebView Dock="Fill" />
+        </NativeViewHost>
+    </DockPanel>
+</Page>

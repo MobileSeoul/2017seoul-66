@@ -1,0 +1,7 @@
+<Rectangle ux:Class="FlatButton" Color="AccentColor" CornerRadius="2">
+	<string ux:Property="Text" />
+	<string ux:Property="MapUrl" />
+
+	<Text Value="{ReadProperty Text}" Color="White" Font="SeoulHangangEB" FontSize="15" Margin="15,10" Alignment="VerticalCenter" />
+	<Shadow Distance="2" Size="2" Color="#0002" />
+</Rectangle>

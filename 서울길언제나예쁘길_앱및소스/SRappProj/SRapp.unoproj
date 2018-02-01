@@ -1,0 +1,38 @@
+{
+  "RootNamespace":"",
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+    "Fuse.Launcher",
+    "Fuse.Storage",
+  ],
+  "Includes": [
+    "*",
+    "Modules/*.js:Bundle",
+    "Components/*.js:Bundle",
+    "List/*.js:Bundle",
+    "Assets/*.png:Bundle",
+  ],
+  "Title": "서예길",
+  "Orientation": "Portrait",
+  "Android": {
+        "Icons": {
+        	   "LDPI": "Assets/android_36x36.png",
+               "MDPI": "Assets/android_48x48.png",
+               "HDPI": "Assets/android_72x72.png",
+               "XHDPI": "Assets/android_96x96.png",
+               "XXHDPI": "Assets/android_144x144.png",
+               "XXXHDPI": "Assets/android_192x192.png"
+           }
+       },
+    "iOS": {
+		"Icons": {
+			"iPhone_29_2x": "Assets/ios_29_2x.png",
+			"iPhone_29_3x": "Assets/ios_29_3x.png",
+			"iPhone_40_2x": "Assets/ios_40_2x.png",
+			"iPhone_40_3x": "Assets/ios_40_3x.png",
+			"iPhone_60_2x": "Assets/ios_40_3x.png",
+			"iPhone_60_3x": "Assets/ios_60_3x.png"
+		}
+	}
+}
